@@ -1,0 +1,71 @@
+
+<style> /* set the CSS */
+    
+    body { font: 12px Arial;}
+    
+    path { 
+        stroke: steelblue;
+        stroke-width: 2;
+        fill: none;
+    }
+    
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: grey;
+        stroke-width: 1;
+        shape-rendering: crispEdges;
+    }
+    
+    </style>
+<head>
+  
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
+    <script>
+        function updateTextInput(val,name) {
+          document.getElementById(name).value=val; 
+        }
+    </script>
+    <link rel='stylesheet' href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+      
+      <div style="width: 1300px; margin-top: 100px;  padding-left: 200  px;">
+            <div style="float: left; width: 250px; border:1px solid black;  background-color: #f5f5f5; padding-left: 20px; padding-top: 20px; padding-bottom: 110px;">
+              <form method="POST">
+                  <center><big><big>Control Panel</big></big></center><br>
+                  Algorithm:<br>
+                  <input type="radio" name="algo" id="pca" value="pca" checked="checked"> PCA </input> <input type="radio" name="algo" id="tsne" value="tsne"> t-SNE </input> <input type="radio" name="algo" id="svmpca" value="svmpca"> SVM-PCA </input> <input type="radio" name="algo" id="nnpro" value="nnpro" > NNPro </input><br>
+                  Loss Function:<br>
+                  <input type="radio" name="loss" id="pca" value="first" checked="checked"> CosDis(A-B,A'-B')<sup>2</sup> </input> <input type="radio" name="loss" id="tsne" value="second"> CosDis(A,A')<sup>2</sup> </input> <input type="radio" name="loss" id="svmpca" value="third">  (|A-B|-|A'-B'|)<sup>2</sup> </input> </br>
+                  File:<br>
+                  <input type="file" name="filename">
+                  <br>
+                  Epochs:<br>
+                  <input type="range" min="0" max="100" name="epochs" onchange="updateTextInput(this.value,'epochtext');" />
+                  <input type="text" id="epochtext" value="" size="3">
+                  <br>
+                  Embedding Level:<br>
+                  <input type="radio" name="embed" id="one" value="1" checked="checked"> One </input> <input type="radio" name="embed" id="two" value="2"> Two </input>
+                  <br>
+                  Bottleneck Size:<br>
+                  <input type="range" min="0" max="30" name="b_size" onchange="updateTextInput(this.value,'bntext');" />
+                  <input type="text" id="bntext" value="" size="2">
+                  <br>
+                  <input type="checkbox" name="line" value="true">Draw lines<br>
+                  Weights:<br>
+                  <input name="weights">
+                  <br>
+                  <input type="submit" value="RUN">
+              </form>
+            </div>
+          <div style="float: left; width: 500px; border:1px solid black; background-color: #f5f5f5;" id = 'graph'></div>
+          <div style="float: left; width: 300px; border:1px solid black; background-color: #f5f5f5;" id = 'stackbar'></div>
+          <div style="float: left; width: 300px; border:1px solid black; background-color: #f5f5f5;;" id='loss'></div>
+          <br style="clear: left;" />
+         </div>
+    <script type='text/javascript' src="{{ url_for('static', filename='plot.js') }}"'></script>
+    <script type='text/javascript' src="{{ url_for('static', filename='pca_components.js') }}"'></script>
+    <script type='text/javascript' src="{{ url_for('static', filename='loss_graph.js') }}"'></script>
+ </body>

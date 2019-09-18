@@ -1,0 +1,39 @@
+<h1>Hello World!</h1>
+<script>
+var data = {{ data.data | safe }}
+console.log('hello')
+console.log(data['color'])
+</script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+        $(function() {
+          $('a#test').bind('click', function() {
+            $.getJSON('/background_process_test',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
+
+<form method="POST">
+    <input name="text">
+    <input type="submit">
+</form>
+
+
+<form action="/action_page.php">
+  Select a file: <input type="file" name="myFile"><br><br>
+  <input type="submit">
+</form>
+
+
+//button
+<div class='container'>
+    <h3>Test</h3>
+        <form>
+            <a href=# id=test><button class='btn btn-default'>Test</button></a>
+        </form>
+
+</div>
