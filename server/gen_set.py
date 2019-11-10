@@ -9,8 +9,8 @@ def gen_set_function(fil,rel):
     relations = list(set(list(tot[2])))
     with open('./embeddings/'+fil,'rb') as f:
         embed = pickle.load(f)
-    tot = tot[tot[2] == rel]
-    #tot = tot.iloc[:4000]
+    #tot = tot[tot[2] == rel]
+    tot = tot.iloc[:100000]
     #print(relations[int(rel)])
     #l = list(tot[0])
     #l+= list(tot[1])

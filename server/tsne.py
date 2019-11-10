@@ -4,8 +4,9 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import pandas as pd
 import pickle
+import time
 
-def tsne_function(fil,rel):
+def tsne_function(fil,rel,lines):
     #X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
     tot = pd.read_table('./data/total.csv',sep='\t',header=None)
     relations = list(set(list(tot[2])))
@@ -40,6 +41,7 @@ def tsne_function(fil,rel):
             nnm.append(nm[i])
     print(len(lll))
     pca = TSNE(n_components=2)
+    starttime = time.time()
     lll = pca.fit_transform(np.array(lll))
     #print(lll.explained_variance_ratio_)
     lll = np.array(lll)
@@ -48,7 +50,29 @@ def tsne_function(fil,rel):
     a2 = lll[:n,1]
     b1 = lll[n:,0]
     b2 = lll[n:,1]
-    cs = pd.DataFrame.from_dict({'x':np.concatenate([a1,b1]),'y':np.concatenate([a2,b2]), 'name':nnm,'color':[0]*n+[1]*n})
+    print(time.time()-starttime)
+    linevar = 0
+    if lines == True:
+        linevar = 1
+    x = np.concatenate([a1,b1])
+    y =np.concatenate([a2,b2])
+    color = [0]*n+[1]*n
+    x_new = []
+    y_new = []
+    color_new = []
+    dic = dict()
+    nnm_new = []
+    for i in range(len(x)):
+        if nnm[i] in dic:
+            continue
+        dic[nnm[i]] = 0
+        nnm_new.append(nnm[i])
+        x_new.append(x[i])
+        y_new.append(y[i])
+        color_new.append( color[i])
+
+
+    cs = pd.DataFrame.from_dict({'x':np.array(x_new),'y':np.array(y_new), 'name':nnm_new,'color':color_new,"line":linevar})
     #cs.to_csv('~/Desktop/vis paper/d3/pca.csv',index=False)
     #plt.scatter(a1,a2,c='red',label='Objects')
     #plt.scatter(b1,b2,c='blue',label='Subjects')
@@ -66,4 +90,4 @@ def tsne_function(fil,rel):
 if __name__ == '__main__':
     fil = 'kg_ent.pkl'
     rel = 'language'
-    print(tsne_function(fil,rel))
+    tsne_function(fil,rel,True)

@@ -28,9 +28,11 @@ from sklearn.decomposition import PCA
 from matplotlib import pyplot as plt
 from keras.backend import clear_session
 from keras.constraints import MinMaxNorm
+import time
+
 class NN:
 
-  def nn_function(self,filename,epochs,type_,embedding_type,first,weights,margin):
+  def nn_function(self,filename,epochs,type_,embedding_type,first,weights,batch,lines):
     #filename = input()
     #epochs = int(input())
     #typ_ = int(input())
@@ -73,7 +75,7 @@ class NN:
     x1 = pic[0][int(num*0.0):,:]
     x2 = pic[1][int(num*0.0):,:]
     ones = np.array([1]*len(x1))
-    y = [margin]*len(x1)
+    y = [1]*len(x1)
 
     val1 = pic[0][:int(num*0.01),:]
     val2 = pic[1][:int(num*0.01),:]
@@ -193,7 +195,8 @@ class NN:
   
     # previous stable 256
     parallel_model.compile(loss='mean_squared_error', optimizer='adam' )
-    history = parallel_model.fit(x=[x1, x2,ones,w1s,w2s,w3s], y=y, batch_size=64, epochs=int(num_epochs),
+    start_time = time.time()
+    history = parallel_model.fit(x=[x1, x2,ones,w1s,w2s,w3s], y=y, batch_size=batch, epochs=int(num_epochs),
                     )
 
 
@@ -256,6 +259,9 @@ class NN:
     bar.to_csv('static/pca.csv',index=False)
     lll = lll.components_
 
+    linevar = 0
+    if lines ==  True:
+      linevar = 1
 
     n = int(len(lll[0])/2)
     a1 = lll[0][:n]
@@ -263,7 +269,7 @@ class NN:
     b1 = lll[0][n:]
     b2 = lll[1][n:]
     
-    cs = pd.DataFrame.from_dict({"x":np.concatenate([a1,b1]),"y":np.concatenate([a2,b2]),"name":tname,"color":col})
+    cs = pd.DataFrame.from_dict({"x":np.concatenate([a1,b1]),"y":np.concatenate([a2,b2]),"name":tname,"color":col,"xx":np.concatenate([b1,a1]),"yy":np.concatenate([b2,a2]),'line':linevar})
 
   
     #cs.to_csv('~/Desktop/vis paper/d3/2d.csv',index=False)
@@ -278,8 +284,9 @@ class NN:
     #print(pca.explained_variance_ratio_)  
 
     #print(pca.singular_values_) 
+    print(time.time()-start_time)
     return cs
   
 if __name__ == '__main__':
   n = NN()
-  n.nn_function('plural.pkl',80,0,"2",15,[1,1,1],1).to_csv('static/2d.csv',index=False)
+  n.nn_function('gen_set.pkl',20,0,"1",10,[1,1,1],64,True).to_csv('static/2d.csv',index=False)

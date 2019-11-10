@@ -32,28 +32,33 @@ def return_csv():
 def read_data():
     filename = request.form['filename']
     epochs = request.form['epochs']
+    lines = request.form.get('line') != None
     embedding_type = request.form['embed']
     algo = request.form['algo']
     b_size = request.form['b_size']
-    #margin = request.form['margin']
-    relation = 'sports' #citytown
+    batch = request.form['batch']
+    relation = 'language' #citytown
     weights = request.form['weights']
     w = []
     for i in weights.split():
         w.append(float(i))
 
     if algo=='nnpro':
-        gen_set_function(filename,relation)
         n = NN()
+        if filename=='plural.pkl':
+            data = n.nn_function(filename,epochs,0,embedding_type,int(b_size),w,int(batch),lines)
+        else:
+         gen_set_function(filename,relation)
+         
     #data = pca_function(text,'language')
     #data = {'csv_data': data}
-        data = n.nn_function('gen_set.pkl',epochs,0,embedding_type,int(b_size),w,1)
+         data = n.nn_function('gen_set.pkl',epochs,0,embedding_type,int(b_size),w,int(batch),lines)
     elif algo=='pca':
-        data = pca_function(filename,relation)
+        data = pca_function(filename,relation,lines)
     elif algo=='svmpca':
-        data = svmpca_function(filename,relation)
+        data = svmpca_function(filename,relation,lines)
     elif algo=='tsne':
-        data = tsne_function(filename,relation)
+        data = tsne_function(filename,relation,lines)
     data.to_csv('static/2d.csv',index=False)
     return render_template('index.html')
 

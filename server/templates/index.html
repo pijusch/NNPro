@@ -31,38 +31,45 @@
   </head>
   <body>
       
-      <div style="width: 1300px; margin-top: 100px;  padding-left: 200  px;">
-            <div style="float: left; width: 250px; border:1px solid black;  background-color: #f5f5f5; padding-left: 20px; padding-top: 20px; padding-bottom: 110px;">
+      <div style="width: 1400px; margin-top: 100px;  padding-left: 200  px;">
+            <div style="float: left; width: 380px; border:3px solid black;  background-color: white; padding-left: 20px; padding-top: 20px; padding-bottom: 14px;">
               <form method="POST">
-                  <center><big><big>Control Panel</big></big></center><br>
+                  <center><big><big><big>Control Panel</big></big></big></center><br><br>
                   Algorithm:<br>
-                  <input type="radio" name="algo" id="pca" value="pca" checked="checked"> PCA </input> <input type="radio" name="algo" id="tsne" value="tsne"> t-SNE </input> <input type="radio" name="algo" id="svmpca" value="svmpca"> SVM-PCA </input> <input type="radio" name="algo" id="nnpro" value="nnpro" > NNPro </input><br>
-                  Loss Function:<br>
-                  <input type="radio" name="loss" id="pca" value="first" checked="checked"> CosDis(A-B,A'-B')<sup>2</sup> </input> <input type="radio" name="loss" id="tsne" value="second"> CosDis(A,A')<sup>2</sup> </input> <input type="radio" name="loss" id="svmpca" value="third">  (|A-B|-|A'-B'|)<sup>2</sup> </input> </br>
+                  <input type="radio" name="algo" id="pca" value="pca" checked="checked"> PCA </input> &nbsp;&nbsp; <input type="radio" name="algo" id="tsne" value="tsne"> t-SNE </input> &nbsp;&nbsp; <input type="radio" name="algo" id="svmpca" value="svmpca"> SVM-PCA </input> &nbsp;&nbsp; <input type="radio" name="algo" id="nnpro" value="nnpro" > NNPro </input><br>
+                  <br>
                   File:<br>
                   <input type="file" name="filename">
                   <br>
-                  Epochs:<br>
+                  <br>
+                  <input type="checkbox" name="line">Draw lines<br>
+                  <br>
+                  Loss Function:<br>
+                  <input type="checkbox" name="loss" id="pca" value="first" > CosDis(A-B,A'-B')<sup>2</sup> </input> &nbsp;&nbsp; <input type="checkbox" name="loss" id="tsne" value="second"> CosDis(A,A')<sup>2</sup> </input>  &nbsp;&nbsp;<input type="checkbox" name="loss" id="svmpca" value="third" checked="checked">  (|A-B|-|A'-B'|)<sup>2</sup> </input> </br>
+                  <br>Epochs:<br>
                   <input type="range" min="0" max="100" name="epochs" onchange="updateTextInput(this.value,'epochtext');" />
                   <input type="text" id="epochtext" value="" size="3">
                   <br>
+                  <br>
                   Embedding Level:<br>
                   <input type="radio" name="embed" id="one" value="1" checked="checked"> One </input> <input type="radio" name="embed" id="two" value="2"> Two </input>
-                  <br>
+                  <br><br>
                   Bottleneck Size:<br>
                   <input type="range" min="0" max="30" name="b_size" onchange="updateTextInput(this.value,'bntext');" />
-                  <input type="text" id="bntext" value="" size="2">
+                  <input type="text" id="bntext" value="" size="2"><br>
                   <br>
-                  <input type="checkbox" name="line" value="true">Draw lines<br>
                   Weights:<br>
-                  <input name="weights">
+                  <input name="weights" value="1 1 1">
+                  <br>
+                  Batch size:
+                  <input name="batch" size="2">
                   <br>
                   <input type="submit" value="RUN">
               </form>
             </div>
-          <div style="float: left; width: 500px; border:1px solid black; background-color: #f5f5f5;" id = 'graph'></div>
-          <div style="float: left; width: 300px; border:1px solid black; background-color: #f5f5f5;" id = 'stackbar'></div>
-          <div style="float: left; width: 300px; border:1px solid black; background-color: #f5f5f5;;" id='loss'></div>
+          <div style="float: left; width: 550px; border:3px solid black; background-color: white; padding-left: 50px;" id = 'graph'></div>
+          <div style="float: left; width: 300px; border:3px solid black; background-color: white;" id = 'stackbar'></div>
+          <div style="float: left; width: 300px; border:3px solid black; background-color: white;;" id='loss'></div>
           <br style="clear: left;" />
          </div>
     <script type='text/javascript' src="{{ url_for('static', filename='plot.js') }}"'></script>

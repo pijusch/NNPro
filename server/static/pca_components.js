@@ -98,6 +98,14 @@ var legend = svg.selectAll(".legend")
   .attr("class", "legend")
   .attr("transform", function(d, i) { return "translate(30," + i * 19 + ")"; });
  
+  svg.append("text")
+  .attr("x", 50)
+  .attr("y", -10)
+  .attr("font-size", 20)
+  .attr("dy", ".35em")
+  .style("text-anchor", "start")
+  .text('PCA Stacked-Bar');
+
 legend.append("rect")
   .attr("x", width - 18)
   .attr("width", 18)
@@ -113,11 +121,11 @@ legend.append("text")
   .style("text-anchor", "start")
   .text(function(d, i) { 
     switch (i) {
-      case 0: return "dim1";
-      case 1: return "dim2";
-      case 2: return "dim3";
-      case 3: return "dim4";
-      case 4: return "rest";
+      case 0: return "PCA1";
+      case 1: return "PCA2";
+      case 2: return "PCA3";
+      case 3: return "PCA4";
+      case 4: return "REST";
     }
   });
 

@@ -4,24 +4,25 @@
     //function d3_func(error,myJson){
         d3.csv('/static/2d.csv', function (data) {
             //var data = myJson
-            //console.log(data)
+        console.log(data)
+        console.log(d3.min(data,function (d) { return parseFloat(d.y)}))
         // Variables
           var margin = { top: 50, right: 50, bottom: 50, left: 50 }
-          var h = 500 - margin.top - margin.bottom
+          var h = 505 - margin.top - margin.bottom
           var w = 500 - margin.left - margin.right
           var formatPercent = d3.format('.2')
           // Scales
         var colorScale = d3.scale.category20()
         var xScale = d3.scale.linear()
           .domain([
-              d3.min([0,d3.min(data,function (d) { return parseFloat(d.x) })]),
-              d3.max([0,d3.max(data,function (d) { return parseFloat(d.x) })])
+              d3.min(data,function (d) { return parseFloat(d.x) }),
+              d3.max(data,function (d) { return parseFloat(d.x) })
               ])
           .range([0,w])
         var yScale = d3.scale.linear()
           .domain([
-              d3.min([0,d3.min(data,function (d) { return parseFloat(d.y) })]),
-              d3.max([0,d3.max(data,function (d) { return parseFloat(d.y) })])
+              d3.min(data,function (d) { return parseFloat(d.y) }),
+              d3.max(data,function (d) { return parseFloat(d.y) })
               ])
           .range([h,0])
           // SVG
@@ -33,7 +34,7 @@
 
 
 
-              svg.append("text")
+             svg.append("text")
 .attr("x", 130)
 .attr("y", -30)
 .attr("font-size", 20)
@@ -42,6 +43,8 @@
 .text('Projection Panel');
 
           // Draw legend
+
+          var num_points = data.length/2
 
 svg.append("rect")
 .attr("x",375)
@@ -53,6 +56,7 @@ svg.append("text")
 .attr("x", 400)
 .attr("y", -30)
 .attr("dy", ".35em")
+.attr('font-size','16')
 .style("text-anchor", "start")
 .text('Heads');
 
@@ -67,8 +71,23 @@ svg.append("text")
 .attr("x", 400)
 .attr("y", -10)
 .attr("dy", ".35em")
+.attr('font-size','16')
 .style("text-anchor", "start")
 .text('Tails');
+console.log(data[0])
+if (data[0].line=="1"){
+var n = data.length/2;
+            var lines = svg.selectAll('line')
+            .data(data.slice(1,n))
+            .enter()
+          .append('line')
+            .attr('x1',function (d) { return xScale(d.x) })
+            .attr('y1',function (d) { return yScale(d.y) })
+            .attr('x2',function (d) { return xScale(d.xx) })
+            .attr('y2',function (d) { return yScale(d.yy) })
+            .attr("stroke-width", 0.1)
+             .attr("stroke", "black");
+}
               
           // X-axis
           var xAxis = d3.svg.axis()
@@ -115,36 +134,28 @@ svg.append("text")
             .attr('class','axis')
             .attr('transform', 'translate(0,' + h + ')')
             .call(xAxis)
-          .append('text') // X-axis Label
+          /*.append('text') // X-axis Label
             .attr('class','label')
             .attr('y',-10)
             .attr('x',w)
             .attr('dy','.71em')
             .style('text-anchor','end')
-            .text('X-Axis')
+            .attr('font-size','16')
+            .text('X-Axis')*/
         // Y-axis
         svg.append('g')
             .attr('class', 'axis')
             .call(yAxis)
-          .append('text') // y-axis Label
+          /*.append('text') // y-axis Label
             .attr('class','label')
             .attr('transform','rotate(-90)')
             .attr('x',0)
             .attr('y',5)
             .attr('dy','.71em')
             .style('text-anchor','end')
-            .text('Y-Axis')
+            .text('Y-Axis')*/
       
-           var zoom = d3.behavior.zoom()
-          .x(xScale)
-          .y(yScale)
-          .scaleExtent([1, 10])
-          .on("zoom", zoomed);
-      
-      function zoomed() {
-        svg.select(".x.axis").call(xAxis);
-        svg.select(".y.axis").call(yAxis);
-      }
+            
       
       })
       //    }
